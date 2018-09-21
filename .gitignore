@@ -329,3 +329,7 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 /career.blt
+/env
+/build/create_file
+/create_file.exe
+/create_file.spec

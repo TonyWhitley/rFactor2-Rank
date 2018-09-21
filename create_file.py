@@ -30,7 +30,8 @@ def get_trackstats(file="career.txt"):
     new_data=[]
     for l in data: # filter new "CRL" Lines
         if l.find("CRL")>=0:
-            next
+            new_data.append("")
+            #next  that messes up the linecount in error reports
         else:
             new_data.append(l)
 
@@ -46,19 +47,28 @@ def get_trackstats(file="career.txt"):
                 while new_data[linecount+count].find("ClassRecord") != -1:
                     count+=1
 
-                trackstats.append(new_data[linecount:linecount+count])
                 # sanity check for keywords TrackName, ClassRecord
                 if new_data[linecount+1].find("TrackName") == -1 or new_data[linecount+3].find("ClassRecord") == -1:
+                    err_line = linecount
                     print("""
 WARNING: Something's wrong with a PLAYERTRACKSTAT entry
 in file %s at line %d, please check.
-Error: Keywords "TrackName" and / or "ClassRecord" not found
-where I expected them.
-                    """ % (file, linecount))
-                    return []
+Keywords "TrackName" and / or "ClassRecord" not found
+where I expected them:
+                    """ % (file, err_line+1))
+                    #print lines of current PLAYERTRACKSTAT down to next PLAYERTRACKSTAT line
+                    while not new_data[err_line+1].startswith('[PLAYERTRACKSTAT]'):
+                      print("%d: %s" % (err_line+1, new_data[err_line]), end='')
+                      err_line+=1
+                    print("%d: %s" % (err_line+1, new_data[err_line]), end='')
+                    err_line+=1
+                    print("%d: %s" % (err_line+1, new_data[err_line]))
+                    #return [] # or could get the rest of the data...
+                    next
             except IndexError:
                 print("Aborting: Something's wrong with the record in file %s at line %d, please check." % (file, linecount))
                 sys.exit(1)
+            trackstats.append(new_data[linecount:linecount+count]) # only if it passed
 
 
 
@@ -95,5 +105,4 @@ if __name__=="__main__":
     input("Press ENTER to exit.")
 
     sys.exit(0)
-
 
