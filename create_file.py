@@ -8,9 +8,10 @@ If everything goes well, you should find a new file called
 problems, feel free to contact us at isiforums.net (user "hoover").
 
 """
+from __future__ import print_function  # Python 2 compatibility
 
 import glob,re,sys
-version="0.26"
+version="0.26t"
 
 def get_trackstats(file="career.txt"):
     """
@@ -22,7 +23,7 @@ def get_trackstats(file="career.txt"):
     try:
         fh = open(file, "r")
     except:
-        print "couldn't open file %s" % file
+        print("couldn't open file %s" % file)
         sys.exit(1)
 
     data = fh.readlines()
@@ -48,15 +49,15 @@ def get_trackstats(file="career.txt"):
                 trackstats.append(new_data[linecount:linecount+count])
                 # sanity check for keywords TrackName, ClassRecord
                 if new_data[linecount+1].find("TrackName") == -1 or new_data[linecount+3].find("ClassRecord") == -1:
-                    print """
+                    print("""
 WARNING: Something's wrong with a PLAYERTRACKSTAT entry
 in file %s at line %d, please check.
 Error: Keywords "TrackName" and / or "ClassRecord" not found
 where I expected them.
-                    """ % (file, linecount)
+                    """ % (file, linecount))
                     return []
             except IndexError:
-                print "Aborting: Something's wrong with the record in file %s at line %d, please check." % (file, linecount)
+                print("Aborting: Something's wrong with the record in file %s at line %d, please check." % (file, linecount))
                 sys.exit(1)
 
 
@@ -71,7 +72,7 @@ def create_file(filename="career.blt"):
     try:
         out = open(filename, "w")
     except:
-        print "Could not open career.blt for writing."
+        print("Could not open career.blt for writing.")
         sys.exit(1)
 
     files = 0
@@ -83,15 +84,15 @@ def create_file(filename="career.blt"):
         if track_stats:
             for l in track_stats:
                 stats+=1
-                print >>out, "".join(l)
+                out.write("".join(l))
 
     out.close()
-    print "%s created successfully from %d files (found %d track records)." % (filename, files, stats)
+    print("%s created successfully from %d files (found %d track records)." % (filename, files, stats))
 
 if __name__=="__main__":
-    print "create_file.py V%s (c) Uwe Schuerkamp, 2014-" % version
+    print("create_file.py V%s (c) Uwe Schuerkamp, 2014-" % version)
     create_file("career.blt")
-    raw_input("Press ENTER to exit.")
+    input("Press ENTER to exit.")
 
     sys.exit(0)
 

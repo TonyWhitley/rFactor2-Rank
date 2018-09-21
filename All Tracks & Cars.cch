@@ -1,0 +1,34 @@
+//[[gMa1.002f (c)2016    ]] [[            ]]
+[CAREER]
+Experience=68
+Money=5000068
+CurSeasIndex=0
+SinglePlayerVehicle="C:\Program Files (x86)\Steam\steamapps\common\rFactor 2\Installed\Vehicles\McLaren_MP4_8_1993\1.06\MP48_SHADOAE2D2DE4.VEH"
+SinglePlayerFilter="Shadow_McLaren_MP4/8"
+MultiPlayerFilter="|McLaren_MP4/8|Shadow_McLaren_MP4/8"
+AIAggression=0.2500
+SinglePlayerAIStrength=80
+MultiPlayerAIStrength=95
+AbortedSeasons=0
+TotalLaps=10
+TotalRaces=0
+TotalRacesWithAI=0
+TotalPointsScored=0
+TotalChampionships=0
+TotalWins=0
+TotalPoles=0
+TotalLapRecords=0
+AvgStartPosition=0.000000
+AvgFinishPosition=0.000000
+AvgRaceDistance=0.000000
+AvgOpponentStrength=0.000000
+[PLAYERTRACKSTAT]
+TrackName=SILVERSTONE_GTLAYOUT
+TrackFile=C:\PROGRAM FILES (X86)\STEAM\STEAMAPPS\COMMON\RFACTOR 2\INSTALLED\LOCATIONS\SILVERSTONE_2016\1.86\SILVERSTONE_GTLAYOUT
+ClassRecord="*",10,100.0464,100.0464,-1.0000
+ClassRecord="McLaren MP4/8 Shadow",10,100.0464,100.0464,-1.0000
+CRL="McLaren MP4/8 #12","Medium","Medium",25622733,3419795182,738344976
+CRQ="McLaren MP4/8 #12","Medium","Medium",25622733,3419795182,738344976
+AIParameters="Pace Car",-1.0000,-1.0000,-1.0000,0
+AIParameters="McLaren MP4/8 Shadow",80.0000,0.2476,0.0476,0
+
