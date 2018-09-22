@@ -10,8 +10,8 @@ problems, feel free to contact us at isiforums.net (user "hoover").
 """
 from __future__ import print_function  # Python 2 compatibility
 
-import glob,re,sys
-version="0.27t"
+import glob,os,re,sys
+version="0.27.1t"
 
 maxErrorLineLength = 60 # Long entries in the cch file spoil the error message appearance
 
@@ -27,60 +27,62 @@ def get_trackstats(file="career.txt"):
       'TrackFile',
       'ClassRecord'
       ]
-    try:
-        fh = open(file, "r")
-    except:
-        print("couldn't open file %s" % file)
-        sys.exit(1)
+    if not os.path.exists(file):
+      print("couldn't open file %s" % file)
+      sys.exit(1)
+    with open(file, "r") as fh:
+      originalFile = fh.readlines()
 
-    data = fh.readlines()
-
-    if 0:
-      #simple
-      trackstats = []
-      for linecount, line in enumerate(data):
-        for keyword in wanted_lines:
-          if line.startswith(keyword):
-            trackstats.append(line)
-            break
-    else:
-      # with error checking
-      trackstats = []
-      trackstatBlocks = []
-      for linecount, line in enumerate(data):
-          if line.startswith('[PLAYERTRACKSTAT]'):
-            trackstatBlocks.append(linecount)
-      trackstatBlocks.append(len(data)) # the last one continues to the end of the file
+      try:
+        trackstats = []
+        trackstatBlocks = [] # List of all the start line numbers of trackstatBlocks
+                             # (also the end of the previous one)
+        for linecount, line in enumerate(originalFile):
+            if line.startswith('[PLAYERTRACKSTAT]'):
+              trackstatBlocks.append(linecount)
+        trackstatBlocks.append(len(originalFile)) # the last one continues to the end of the file
          
-      for block in range(len(trackstatBlocks)-1):
-        trackstat = []
-        for line in data[trackstatBlocks[block]:trackstatBlocks[block+1]]:
-          for keyword in wanted_lines:
-            if line.startswith(keyword):
-              trackstat.append(line)
-              break
-        # sanity check for keywords TrackName, ClassRecord
-        if len(trackstat) >= 4:
-          if trackstat[0].startswith(wanted_lines[0]) and \
-          trackstat[1].startswith(wanted_lines[1]) and \
-          trackstat[2].startswith(wanted_lines[2]):
-            #it's good
-            trackstats.extend(trackstat)
-            continue
-        # it's bad
-        err_line = trackstatBlocks[block]+1
-        print("""
-WARNING: Something's wrong with a PLAYERTRACKSTAT entry
-in file %s at line %d, please check.
-Keywords "TrackName" and / or "ClassRecord" not found
-where I expected them:
-        """ % (file, err_line))
-        for line in data[trackstatBlocks[block]:trackstatBlocks[block+1]]:
-          if len(line) > maxErrorLineLength:
-            line = line[:maxErrorLineLength] + '...\n'
-          print("%s:%d: %s" % (file, err_line, line), end='')
-          err_line += 1
-        print()
+        for block in range(len(trackstatBlocks)-1):
+          trackstat = []
+          for line in originalFile[trackstatBlocks[block]:trackstatBlocks[block+1]]:
+            for keyword in wanted_lines:
+              if line.startswith(keyword):
+                trackstat.append(line)
+                break
+          # sanity check for keywords TrackName, TrackFile and ClassRecord
+          if len(trackstat) >= 4:
+            if trackstat[1].startswith(wanted_lines[1]) and \
+            trackstat[2].startswith(wanted_lines[2]) and \
+            trackstat[3].startswith(wanted_lines[3]):
+              #it's good
+              trackstats.extend(trackstat)
+              continue
+          # it's bad
+          err_line = trackstatBlocks[block]+1
+          print("""
+  WARNING: Something's wrong with a PLAYERTRACKSTAT entry
+  in file %s at line %d, please check.
+  Keywords "TrackName" and / or "ClassRecord" not found
+  where I expected them:
+          """ % (file, err_line))
+          # List lines from start of this block up (not including) to start of next
+          for line in originalFile[trackstatBlocks[block]:trackstatBlocks[block+1]]:
+            if len(line) > maxErrorLineLength:
+              # Long entries in the cch file spoil the error message appearance, trim them
+              line = line[:maxErrorLineLength] + '...\n'
+            print("%s:%d: %s" % (file, err_line, line), end='')
+            err_line += 1
+          print()
+      except IndexError:
+          print("Aborting: Something's wrong with the record in file %s at line %d, please check." 
+                % (file, linecount+1))
+          sys.exit(1)
+
+      except: # some other error
+          print("Unexpected error:", sys.exc_info()[0])
+          print("Aborting: Something's wrong with the file %s around line %d, please check." 
+                % (file, linecount+1))
+          sys.exit(1)
 
     return trackstats
 
