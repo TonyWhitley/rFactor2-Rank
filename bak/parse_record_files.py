@@ -1,6 +1,6 @@
 import os
-maxErrorLineLength = 60 # Long entries in the cch file spoil the error message appearance
 
+maxErrorLineLength = 60 # Long entries in the cch file spoil the error message appearance
 
 class cchFile:
   records = []
@@ -18,6 +18,7 @@ class cchFile:
         'TrackFile',
         'ClassRecord'
         ]
+      self.recordResults = ['all the [CAREER] stuff']
       self.cchFileName = cchFileName
       self.lines = ['[PLAYERTRACKSTAT]']
       self.lines.extend(playerTrackStatText.split('\n')[:-1]) # Lose the blank line at the end
@@ -50,7 +51,6 @@ where I expected them:
         err_line += 1
 
   def __init__(self, cchFileText, cchFileName):
-    self.recordResults = ['all the [CAREER] stuff']
     self.recordsText = cchFileText.split('[PLAYERTRACKSTAT]\n')
     self.records = [self.recordsText[0].split('\n')[:-1]] # Lose the blank line at the end
     lineNumberOfThisRecord = len(self.records[0]) # Lines in Header plus [CAREER] record
