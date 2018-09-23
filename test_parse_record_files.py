@@ -1,6 +1,8 @@
+""" unittest for parse_record_files """
 import unittest
 import parse_record_files
 
+#test file contents
 f1_67_cch = r"""//[[gMa1.002f (c)2016    ]] [[            ]]
 [CAREER]
 Experience=2970
@@ -66,6 +68,8 @@ AIParameters="EVE_F1",100.0000,0.0381,0.0476,0
 AIParameters="Spark_F1",100.0000,0.0381,0.0476,0
 
 """
+
+#expected results for each section
 record1_result = r"""[PLAYERTRACKSTAT]
 TrackName=MONTECARLO_1966
 TrackFile=C:\PROGRAM FILES (X86)\STEAM\STEAMAPPS\COMMON\RFACTOR 2\INSTALLED\LOCATIONS\MONTECARLO_1966\2.1\MONTECARLO_1966
@@ -74,10 +78,11 @@ ClassRecord="Brabham BT20",6,95.6254,-1.0000,-1.0000
 """
 
 record2_result = None
+#expected error
 record2_error = r"""WARNING: Something's wrong with a PLAYERTRACKSTAT entry
 in file f1_67_cch at line 33, please check.
 Keywords "TrackName" and / or "ClassRecord" not found
-where I expected them:
+where I expected them.  This is the complete entry:
 f1_67_cch:33: [PLAYERTRACKSTAT]
 f1_67_cch:34: TrackName=AUTODROMO_DI_IMOLA_GP
 f1_67_cch:35: TrackFile=C:\PROGRAM FILES (X86)\STEAM\STEAMAPPS\COMMON\RFAC...
@@ -92,6 +97,7 @@ ClassRecord="Ferrari 312/67 Ferrari 242 3.0 ",37,124.3666,-1.0000,124.3666
 ClassRecord="Brabham BT20",6,128.0244,-1.0000,128.0244
 """
 
+#expected results for the whole file
 career_blt_result = r"""[PLAYERTRACKSTAT]
 TrackName=MONTECARLO_1966
 TrackFile=C:\PROGRAM FILES (X86)\STEAM\STEAMAPPS\COMMON\RFACTOR 2\INSTALLED\LOCATIONS\MONTECARLO_1966\2.1\MONTECARLO_1966
@@ -110,7 +116,8 @@ ClassRecord="*",32,84.0992,-1.0000,84.0992
 ClassRecord="Brabham BT20",32,84.0992,-1.0000,84.0992
 """
 
-blankTractStat = r"""//[[gMa1.002f (c)2016    ]] [[            ]]
+#test file contents
+blankTrackStat = r"""//[[gMa1.002f (c)2016    ]] [[            ]]
 [CAREER]
 Experience=2970
 ...blah...
@@ -119,15 +126,15 @@ TrackName=AUTODROMO_DI_IMOLA_GP
 TrackFile=C:\PROGRAM FILES (X86)\STEAM\STEAMAPPS\COMMON\RFACTOR 2\INSTALLED\LOCATIONS\SM_AUTODROMO_DI_IMOLA_V1.2\1.2\AUTODROMO_DI_IMOLA_GP
 AIParameters="Brabham BT20",100.0000,0.0381,0.0476,0
 """
-
-blankTractStatError = r"""WARNING: Something's wrong with a PLAYERTRACKSTAT entry
-in file blankTractStat at line 5, please check.
+#expected error
+blankTrackStatError = r"""WARNING: Something's wrong with a PLAYERTRACKSTAT entry
+in file blankTrackStat at line 5, please check.
 Keywords "TrackName" and / or "ClassRecord" not found
-where I expected them:
-blankTractStat:5: [PLAYERTRACKSTAT]
-blankTractStat:6: TrackName=AUTODROMO_DI_IMOLA_GP
-blankTractStat:7: TrackFile=C:\PROGRAM FILES (X86)\STEAM\STEAMAPPS\COMMON\RFAC...
-blankTractStat:8: AIParameters="Brabham BT20",100.0000,0.0381,0.0476,0
+where I expected them.  This is the complete entry:
+blankTrackStat:5: [PLAYERTRACKSTAT]
+blankTrackStat:6: TrackName=AUTODROMO_DI_IMOLA_GP
+blankTrackStat:7: TrackFile=C:\PROGRAM FILES (X86)\STEAM\STEAMAPPS\COMMON\RFAC...
+blankTrackStat:8: AIParameters="Brabham BT20",100.0000,0.0381,0.0476,0
 """
 
 
@@ -138,7 +145,7 @@ class Test_test1(unittest.TestCase):
 
     def test_2_contentsOfRecord1(self):
         cchFile_o = parse_record_files.cchFile(f1_67_cch, 'f1_67_cch')
-        self.assertEqual(len(cchFile_o.records[1]), 8)
+        self.assertEqual(len(cchFile_o._records[1]), 8)
 
     def test_3_resultOfRecord1(self):
         cchFile_o = parse_record_files.cchFile(f1_67_cch, 'f1_67_cch')
@@ -171,12 +178,12 @@ class Test_test1(unittest.TestCase):
         self.assertMultiLineEqual(_errors, record2_error)
 
     def test_7_resultOfAllRecords_blank(self):
-        cchFile_o = parse_record_files.cchFile(blankTractStat, 'blankTractStat')
+        cchFile_o = parse_record_files.cchFile(blankTrackStat, 'blankTrackStat')
         _career_blt = cchFile_o.get_career_blt_contribution()
         self.assertMultiLineEqual(_career_blt, '')
 
         _errors = cchFile_o.get_errors()
-        self.assertMultiLineEqual(_errors, blankTractStatError)
+        self.assertMultiLineEqual(_errors, blankTrackStatError)
 
 if __name__ == '__main__':
     unittest.main()
