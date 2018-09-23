@@ -11,7 +11,7 @@ problems, feel free to contact us at isiforums.net (user "hoover").
 from __future__ import print_function  # Python 2 compatibility
 
 import glob,os,re,sys
-version="0.127.0t"
+version="0.127.1t"
 
 import parse_record_files
 
@@ -37,7 +37,7 @@ def create_file(filename="career.blt"):
     print("%s created successfully from %d files (found %d track records)." % (filename, files, stats))
 
 if __name__=="__main__":
-    print("create_file.py V%s (c) Uwe Schuerkamp, 2014-" % version)
+    print("create_file.py V%s (c) Uwe Schuerkamp, 2014-2018" % version)
     create_file("career.blt")
     input("Press ENTER to exit.")
 
