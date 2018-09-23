@@ -20,6 +20,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="create_file.py" />
+    <Compile Include="parse_record_files.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="test_parse_record_files.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
