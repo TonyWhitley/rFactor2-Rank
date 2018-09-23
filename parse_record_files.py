@@ -1,9 +1,11 @@
+import os
 maxErrorLineLength = 60 # Long entries in the cch file spoil the error message appearance
+
 
 class cchFile:
   records = []
   recordsText = []
-  recordResults = ['all the [CAREER] stuff']
+  recordResults = []
 
   class playerTrackStat:
     lines = []
@@ -41,10 +43,14 @@ where I expected them:
 """ % (cchFileName, err_line)
       # List lines from start of this block up (not including) to start of next
       for line in self.lines:
+        if len(line) > maxErrorLineLength:
+          # Long entries in the cch file spoil the error message appearance, trim them
+          line = line[:maxErrorLineLength] + '...'
         self.error += "%s:%d: %s\n" % (cchFileName, err_line, line)
         err_line += 1
 
   def __init__(self, cchFileText, cchFileName):
+    self.recordResults = ['all the [CAREER] stuff']
     self.recordsText = cchFileText.split('[PLAYERTRACKSTAT]\n')
     self.records = [self.recordsText[0].split('\n')[:-1]] # Lose the blank line at the end
     lineNumberOfThisRecord = len(self.records[0]) # Lines in Header plus [CAREER] record
@@ -56,4 +62,36 @@ where I expected them:
       self.records.append(playerTrackStat_o.lines)
       self.recordResults.append((playerTrackStat_o.parsed, playerTrackStat_o.error))
 
+  def get_career_blt_contribution(self):
+    _career_blt = []
+    for result in range(1, len(self.recordResults)):
+      if self.recordResults[result][0]:
+        _career_blt.append(self.recordResults[result][0])
+    _result = ''.join(_career_blt)
+    return _result
 
+  def get_errors(self):
+    _errors = []
+    for result in range(1, len(self.recordResults)):
+      if self.recordResults[result][0] == None:
+        _errors.append(self.recordResults[result][1])
+    _result = ''.join(_errors)
+    return _result
+
+def get_trackstats(cchFileName="career.txt"):
+    """
+    Get all valid trackstat records from a CCH file (argument)
+    Has rudimentary error checking
+    Returns: Array containing valid PLAYERTRACKSTAT sections
+    """
+    if not os.path.exists(cchFileName):
+      print("couldn't open file %s" % cchFileName)
+      sys.exit(1)
+    with open(cchFileName, "r") as fh:
+      originalText = fh.read()
+      cchFile_o = cchFile(originalText, cchFileName)
+      _career_blt = cchFile_o.get_career_blt_contribution()
+      _errors = cchFile_o.get_errors()
+      print(_errors)
+      return _career_blt
+    return None #?
