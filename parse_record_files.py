@@ -10,7 +10,10 @@ where I expected them.  This is the complete entry:
 """
 
 class _playerTrackStat:
-  """ Class that takes the text of a [PLAYERTRACKSTAT] section as a single string """
+  """
+  Class that takes the text of a [PLAYERTRACKSTAT] section as a single string 
+  and parses it, returning the career.blt record as a string.
+  """
   lines = []    # the lines in the section
   parsed = None # the result text (Stays None if there are errors)
   error = None  # the error text (if there are any)
@@ -38,7 +41,6 @@ class _playerTrackStat:
       assert _trackstat[3].startswith(wanted_lines[2])
       # parsed OK
       self.parsed = '\n'.join(_trackstat)+'\n'
-      return
 
     except:    
       # else return error and self.parsed is None

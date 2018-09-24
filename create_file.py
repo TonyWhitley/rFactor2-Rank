@@ -11,7 +11,7 @@ problems, feel free to contact us at isiforums.net (user "hoover").
 from __future__ import print_function  # Python 2 compatibility
 
 import glob,os,re,sys
-version="0.127.1t"
+version="0.127.2t"
 
 import parse_record_files
 
