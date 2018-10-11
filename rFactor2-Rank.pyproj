@@ -27,6 +27,9 @@
     <Compile Include="test_parse_record_files.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="usingConfigParser.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

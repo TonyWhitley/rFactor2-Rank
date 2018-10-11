@@ -1,6 +1,7 @@
 """ unittest for parse_record_files """
 import unittest
 import parse_record_files
+import usingConfigParser
 
 #test file contents
 f1_67_cch = r"""//[[gMa1.002f (c)2016    ]] [[            ]]
@@ -138,7 +139,7 @@ blankTrackStat:8: AIParameters="Brabham BT20",100.0000,0.0381,0.0476,0
 """
 
 
-class Test_test1(unittest.TestCase):
+class Test_using_parse_record_files(unittest.TestCase):
     def test_1_splitIntoRecords(self):
         cchFile_o = parse_record_files.cchFile(f1_67_cch, 'f1_67_cch')
         self.assertEqual(len(cchFile_o.recordsText), 5)
@@ -184,6 +185,15 @@ class Test_test1(unittest.TestCase):
 
         _errors = cchFile_o.get_errors()
         self.assertMultiLineEqual(_errors, blankTrackStatError)
+
+class Test_using_configParser(unittest.TestCase):
+    def test_6_resultOfAllRecords(self):
+        cchFile_o = usingConfigParser.cchFile(f1_67_cch, 'f1_67_cch')
+
+        _career_blt = cchFile_o.get_career_blt_contribution()
+        self.assertMultiLineEqual(_career_blt, career_blt_result)
+        # Doesn't do errors yet.
+
 
 if __name__ == '__main__':
     unittest.main()
