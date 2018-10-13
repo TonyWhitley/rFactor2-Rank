@@ -1,8 +1,6 @@
 # Using rFactor2-Rank
 
-o Download the binary from [releases](../../releases)
-
-o Save the **create_file.exe** file to your **rFactor2/UserData/player** directory (the one that contains all those ".cch" files)
+o Download **create_file.exe** file from [releases](../../releases) to your **rFactor2/UserData/player** directory (the one that contains all those ".cch" files)
 
 o Double click **create_file.exe** to create / update a **career.blt** file
 
