@@ -1,4 +1,4 @@
-# rFactor2-Rank
+# Using rFactor2-Rank
 
 o Download the binary from [releases](../../releases)
 
