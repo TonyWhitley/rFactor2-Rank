@@ -4,7 +4,7 @@ o Download **create_file.exe** file from [releases](../../releases) to your **rF
 
 o Double click **create_file.exe** to create / update a **career.blt** file
 
-o Head over to https://rf2.gplrank.info/ and upload your lap times by pointing the upload page to your **career.blt** file
+o Head over to https://rf2.gplrank.info/ and upload your lap times by pointing the upload page to your **career.blt** file (create_file opens it for you)
 
 #### Developer notes
 I took Uwe's original files and tweaked them. They already worked fine, the main change was packaging it up as an exe but the error reporting is also improved.
