@@ -11,7 +11,9 @@ problems, feel free to contact us at isiforums.net (user "hoover").
 from __future__ import print_function  # Python 2 compatibility
 
 import glob,os,re,sys
-version="0.127.2t"
+import webbrowser
+
+version="0.127.3t"
 
 import parse_record_files
 
@@ -39,6 +41,11 @@ def create_file(filename="career.blt"):
 if __name__=="__main__":
     print("create_file.py V%s (c) Uwe Schuerkamp, 2014-2018" % version)
     create_file("career.blt")
+
+    print("Opening the rankings site...")
+    url = 'http://rf2.gplrank.info/'
+    webbrowser.open(url)
+
     input("Press ENTER to exit.")
 
     sys.exit(0)
