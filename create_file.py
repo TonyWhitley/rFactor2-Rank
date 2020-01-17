@@ -13,7 +13,7 @@ from __future__ import print_function  # Python 2 compatibility
 import glob,os,re,sys
 import webbrowser
 
-version="0.127.3t"
+version="0.127.8t"
 
 import parse_record_files
 
@@ -40,6 +40,7 @@ def create_file(filename="career.blt"):
 
 if __name__=="__main__":
     print("create_file.py V%s (c) Uwe Schuerkamp, 2014-2018" % version)
+    print("Updated 2019-20 by https://forum.studio-397.com/index.php?members/seven-smiles.23088/")
     create_file("career.blt")
 
     print("Opening the rankings site...")

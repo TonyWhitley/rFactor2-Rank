@@ -1,8 +1,8 @@
-altgraph==0.16.1
-future==0.18.1
-macholib==1.11
+altgraph==0.17
+future==0.18.2
+macholib==1.14
 pefile==2019.4.18
 pip==19.3.1
-PyInstaller==3.5
+PyInstaller==3.6
 pywin32-ctypes==0.2.0
-setuptools==41.5.1
+setuptools==45.0.0
