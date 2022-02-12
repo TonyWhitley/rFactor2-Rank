@@ -3,7 +3,7 @@ import unittest
 import parse_record_files
 import usingConfigParser
 
-#test file contents
+# test file contents
 f1_67_cch = r"""//[[gMa1.002f (c)2016    ]] [[            ]]
 [CAREER]
 Experience=2970
@@ -70,7 +70,7 @@ AIParameters="Spark_F1",100.0000,0.0381,0.0476,0
 
 """
 
-#expected results for each section
+# expected results for each section
 record1_result = r"""[PLAYERTRACKSTAT]
 TrackName=MONTECARLO_1966
 TrackFile=C:\PROGRAM FILES (X86)\STEAM\STEAMAPPS\COMMON\RFACTOR 2\INSTALLED\LOCATIONS\MONTECARLO_1966\2.1\MONTECARLO_1966
@@ -79,7 +79,7 @@ ClassRecord="Brabham BT20",6,95.6254,-1.0000,-1.0000
 """
 
 record2_result = None
-#expected error
+# expected error
 record2_error = r"""WARNING: Something's wrong with a PLAYERTRACKSTAT entry
 in file f1_67_cch at line 33, please check.
 Keywords "TrackName" and / or "ClassRecord" not found
@@ -98,7 +98,7 @@ ClassRecord="Ferrari 312/67 Ferrari 242 3.0 ",37,124.3666,-1.0000,124.3666
 ClassRecord="Brabham BT20",6,128.0244,-1.0000,128.0244
 """
 
-#expected results for the whole file
+# expected results for the whole file
 career_blt_result = r"""[PLAYERTRACKSTAT]
 TrackName=MONTECARLO_1966
 TrackFile=C:\PROGRAM FILES (X86)\STEAM\STEAMAPPS\COMMON\RFACTOR 2\INSTALLED\LOCATIONS\MONTECARLO_1966\2.1\MONTECARLO_1966
@@ -117,7 +117,7 @@ ClassRecord="*",32,84.0992,-1.0000,84.0992
 ClassRecord="Brabham BT20",32,84.0992,-1.0000,84.0992
 """
 
-#test file contents
+# test file contents
 blankTrackStat = r"""//[[gMa1.002f (c)2016    ]] [[            ]]
 [CAREER]
 Experience=2970
@@ -127,7 +127,7 @@ TrackName=AUTODROMO_DI_IMOLA_GP
 TrackFile=C:\PROGRAM FILES (X86)\STEAM\STEAMAPPS\COMMON\RFACTOR 2\INSTALLED\LOCATIONS\SM_AUTODROMO_DI_IMOLA_V1.2\1.2\AUTODROMO_DI_IMOLA_GP
 AIParameters="Brabham BT20",100.0000,0.0381,0.0476,0
 """
-#expected error
+# expected error
 blankTrackStatError = r"""WARNING: Something's wrong with a PLAYERTRACKSTAT entry
 in file blankTrackStat at line 5, please check.
 Keywords "TrackName" and / or "ClassRecord" not found
@@ -150,11 +150,13 @@ class Test_using_parse_record_files(unittest.TestCase):
 
     def test_3_resultOfRecord1(self):
         cchFile_o = parse_record_files.cchFile(f1_67_cch, 'f1_67_cch')
-        #print(cchFile_o.recordResults[1])
-        #print(len(cchFile_o.recordResults[1]))
-        #print(record1_result)
-        #print(len(record1_result))
-        self.assertMultiLineEqual(cchFile_o.recordResults[1][0], record1_result)
+        # print(cchFile_o.recordResults[1])
+        # print(len(cchFile_o.recordResults[1]))
+        # print(record1_result)
+        # print(len(record1_result))
+        self.assertMultiLineEqual(
+            cchFile_o.recordResults[1][0],
+            record1_result)
 
     def test_4_resultOfRecord2(self):
         cchFile_o = parse_record_files.cchFile(f1_67_cch, 'f1_67_cch')
@@ -167,7 +169,9 @@ class Test_using_parse_record_files(unittest.TestCase):
 
     def test_5_resultOfRecord3(self):
         cchFile_o = parse_record_files.cchFile(f1_67_cch, 'f1_67_cch')
-        self.assertMultiLineEqual(cchFile_o.recordResults[3][0], record3_result)
+        self.assertMultiLineEqual(
+            cchFile_o.recordResults[3][0],
+            record3_result)
 
     def test_6_resultOfAllRecords(self):
         cchFile_o = parse_record_files.cchFile(f1_67_cch, 'f1_67_cch')
@@ -179,12 +183,14 @@ class Test_using_parse_record_files(unittest.TestCase):
         self.assertMultiLineEqual(_errors, record2_error)
 
     def test_7_resultOfAllRecords_blank(self):
-        cchFile_o = parse_record_files.cchFile(blankTrackStat, 'blankTrackStat')
+        cchFile_o = parse_record_files.cchFile(
+            blankTrackStat, 'blankTrackStat')
         _career_blt = cchFile_o.get_career_blt_contribution()
         self.assertMultiLineEqual(_career_blt, '')
 
         _errors = cchFile_o.get_errors()
         self.assertMultiLineEqual(_errors, blankTrackStatError)
+
 
 class Test_using_configParser(unittest.TestCase):
     def test_6_resultOfAllRecords(self):
